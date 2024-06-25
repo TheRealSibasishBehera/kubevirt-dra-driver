@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubevirt-dra-driver-controller
+  namespace: kubevirt-dra-driver
+  labels:
+    app.kubernetes.io/name: kubevirt-dra-driver
+    app.kubernetes.io/instance: kubevirt-dra-driver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kubevirt-dra-driver
+      app.kubernetes.io/instance: kubevirt-dra-driver
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kubevirt-dra-driver
+        app.kubernetes.io/instance: kubevirt-dra-driver
+    spec:
+      priorityClassName: system-node-critical
+      serviceAccountName: kubevirt-dra-driver-service-account
+      containers:
+        - name: controller
+          image: registry:5000/registry.example.com/kubevirt-dra-driver:v0.1.0
+          imagePullPolicy: Always
+          command: ["virt-dra-controller"]
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ "ALL" ]
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+            seccompProfile:
+              type: RuntimeDefault
