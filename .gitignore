@@ -7,11 +7,6 @@ vendor/
 # Ignore swap files
 [._]*.sw[a-p]
 
-# Ignore specific files
-virt-dra-controller
-kubelet-plugin
-set-nas-status
-
 # Ignore .bak and .idea directories
 .bak/
 .idea/
