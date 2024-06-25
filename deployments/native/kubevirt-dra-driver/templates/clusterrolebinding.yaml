@@ -1,0 +1,14 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubevirt-dra-driver-role-binding
+  namespace: kubevirt-dra-driver
+subjects:
+  - kind: ServiceAccount
+    name: kubevirt-dra-driver-service-account
+    namespace: kubevirt-dra-driver
+roleRef:
+  kind: ClusterRole
+  name: kubevirt-dra-driver-role
+  apiGroup: rbac.authorization.k8s.io
